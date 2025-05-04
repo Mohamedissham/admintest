@@ -1,2 +1,0 @@
-# admintest
-admintest
