@@ -1,5 +1,5 @@
 :root {
-    /* Royal Blue Professional Theme */
+    /* Royal Blue  */
     --primary: #1e3a8a;           /* Royal blue */
     --secondary: #0a2540;         /* Deep navy blue */
     --accent: #3b82f6;            /* Bright blue */
@@ -862,7 +862,7 @@ body {
 .working-hours-box {
     display: flex;
     align-items: flex-start;
-    background: linear-gradient(90deg, var(--primary), var(--accent-light));
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
     border-radius: var(--border-radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow);
