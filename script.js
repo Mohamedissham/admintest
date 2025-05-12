@@ -65,36 +65,53 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
- // Counter animation with dynamic speed for 7 seconds
+
+
+
+// Counter animation - All counters finish in exactly 2 seconds
 const counterElements = document.querySelectorAll('.counter');
 
 function animateCounters() {
+    const duration = 2000; // 2 seconds total duration
+    const frameRate = 30; // frames per second
+    const totalFrames = Math.round(duration / (1000 / frameRate)); // total frames for animation
+
     counterElements.forEach(counter => {
-        const target = +counter.getAttribute('data-target');
+        const target = parseFloat(counter.getAttribute('data-target'));
         const numberElement = counter.querySelector('.number');
-        let count = +numberElement.innerText;
+        const isDecimal = target % 1 !== 0;
 
-        // Calculate speed so that the counter reaches the target in 7 seconds
-        const duration = 7; // Total duration in seconds
-        const speed = target / duration; // Speed required to reach target in 7 seconds
+        let frame = 0;
 
-        function updateCounter() {
-            if (count < target) {
-                count = Math.ceil(count + speed); // Increment counter value
-                numberElement.innerText = count;
-                setTimeout(updateCounter, 10); // Small delay for smooth animation
+        const updateCounter = () => {
+            frame++;
+            const progress = Math.min(frame / totalFrames, 1);
+            const current = target * progress;
+
+            numberElement.innerText = isDecimal
+                ? current.toFixed(1)
+                : Math.floor(current);
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
             } else {
-                numberElement.innerText = target; // Set final value
-                if (counter.querySelector('.plus')) {
-                    counter.querySelector('.plus').style.display = 'inline'; // Ensure + symbol shows
-                }
-            }
-        }
+                numberElement.innerText = isDecimal
+                    ? target.toFixed(1)
+                    : target;
 
-        updateCounter(); // Start the counter animation
+                // Show + or % if present
+                const plus = counter.querySelector('.plus');
+                const suffix = counter.querySelector('.suffix');
+                if (plus) plus.style.display = 'inline';
+                if (suffix) suffix.style.display = 'inline';
+            }
+        };
+
+        updateCounter();
     });
 }
 
+// Trigger on stats section scroll into view
 const statsSection = document.querySelector('.stats');
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
